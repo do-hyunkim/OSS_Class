@@ -1,0 +1,207 @@
+3. 18
+
+4) grep
+-matching
+-대소문자 구분함
+-라인 전체를 출력한다.
+
+Q. The 가 있는 txt 파일을 전체 조회하라 : *
+A. grep The *.txt
+    grep -v The animals.txt
+
+-   -v : 조건 문자열이 없는 라인 출력 ( The 가 없는 문자열을 출력하는것)
+
+Q. /usr/lib 에 포함된 하위 디렉터리 개수 알아내기
+A. ls -ls /usr/lib | cut -c1 | grep d
+
+
+5. sort
+- 정렬, 오름차순(abcd...)
+- -r(reverse)
+- 숫자 정렬 ( -n) 
+  sort -n -r sample.txt
+  sort -nr sample.txt
+
+Q. animals.txt 3번째 필드가 숫자 -> 오름차순 정렬해서 출력
+A.
+ cut -f3 animals.txt | sort -nr
+
+Q. 최소값, 최대값 출력하기
+A. 
+최대 cut -f3 animals.txt | sort -nr | head -n1
+최소 cut -f3 animals.txt | sort -n | head -n1
+
+Q. /etc/passwd 디렉터리에서 사용자 이름 정렬하여 추출하기
+A  head /etc/passwd | sort 
+-d: 
+ : 로 구분된 필드 중 1번째 사용자
+
+Q. 전체 출력하기
+A. cut -d: -f1 /etc/passwd
+
+Q. 사용자 중 root가 있는지 확인하기
+A.  head /etc/passwd | sort | cut -d: -f1  | grep root
+
+-  | grep root
+- Root, root, ROOT
+- root "abcdroot'
+- _root_   => -w
+
+ex) root, broot, bayroot, rootfile ....
+"root"
+-w <<< 이거를 쓰면 root 만 있는거를 확인가능
+
+
+Q. ls, head  차이
+- ls : 파일, 디렉터리 목록
+- head : 파일 내용 조회
+
+# letters 내용 조회하기
+6) uniq
+- 중복된 문자열을 제거해서 보여주되, 인접한 중복 문자열만
+
+uniq letters
+uniq -c letters : 숫자까지 셀수있음
+
+Q. 성적표(grades 파일)에서 가장 빈번하지 않은 등급부터 출력
+A. cut -f1 grades | sort -nr | uniq -c | sort -n (내꺼)
+A. 
+
+sort -n
+sort 
+결과가 같다.
+
+ex) sort -n
+1 C
+1 A
+
+sort 
+1 C 
+
+문자만 출력하고 싶은데
+- rev c1 찾는방법(!!!!!!!!!!!!!!) 
+- c9 ( 스페이스를 다 찾아서)
+
+3.18 오픈소스 sw
+
+#1. 버전 관리
+- 파일의 변화를 시간에 따라 저장했다가 나중에 특정 시점의 버전으로 
+다시 꺼낼수 있는 시스템
+- 협업 
+- 툴 : 깃
+
+#2. 깃
+- 데이터 저장 방식 : 스냅샷(스냅샷을 찍듯이)
+- 오프라인 ( 오프라인에서도 바로 저장가능)
+  빈 파일 -> 텍스트 입력 -> 빈 파일
+  키(key)-벨류(value)
+  - 키는 고유하다. (해시)
+  - 벨류(텍스트)
+- 깃 상태
+  - 수정 : 파일이 변경된 상태
+  - 커밋 : 저장(스냅샷을 저장) 
+  - 스테이지 : 스냅샷을 찍어서 커밋할 준비가 된 상태
+
+  - 수정 
+  - 스테이징 -> 커밋
+
+- 깃 커밋 순서:
+  상태 체크 -> (수정) -> 스테이징 -> 커밋
+
+1) 버전 체크
+  git --version
+  * git -v , --version 
+  ex) ls -l
+       ls --list(x) 
+
+2) 사용자 정보 설정하기
+-name
+-email
+-옵션 : --global : 전체시스템에 영향을 준다.
+  - 프로젝트마다 다른 일므을 사용하고 싶을 경우 옵션을 제외함
+
+git config --global user.name " 이름 "
+-core.editor
+  -vi 빠져나올 때는 : q + 엔터
+
+-git hepl <프로그램명> : 나올때는 q
+
+
+#디렉터리(directory)
+-현재 디렉터리 : working directory, current directory
+- 우리가 말하는 "폴더" 
+- 트리구조를 가진
+ex)
+animals/
+ - name.txt
+ - age.txt
+mammals/
+- cow.txt
+reptile/
+-
+
+-하위 디렉터리(child) - 하위 폴더  : animals -> mammals 
+name.txt -> 파일
+-상위 디렉터리(parent) mammalas > animals
+-형제 디렉터리 - mammls, reptile
+
+- " / " 로 구분한다 (디렉터리 형태 구분)
+  animals/mammals/cow.txt
+  <디렉터리/.../.../.../파일명>
+- / : 루트 디렉터리
+
+- 절대경로 : 루트에서부터 시작
+- 상대경로 : 현재를 기준 
+ex)  나의 현재 위치가 mammals이다. 근데 위로 가고싶다(상위 디렉터리고가고싶다)
+1) 절대경로 : /...../mammals
+2) 상대경로 : .. ( .. 두개) ---> 
+  .. : 부모 디렉터리
+  . : 현재 디렉터리
+
+-cd : change dircetory
+
+ex) cd ./mammals - 
+     cd.. 
+
+
+- pwd , cd
+- .. , .
+- mkdir ( make directory 의 줄임말)
+새로운 디렉터리(폴더)를 만드는 명령어
+새로운 디렉터리 만들고 싶음
+ex) mkdir new_directory
+
+
+Q. new_dir로 이동해서 디렉터리 생성 "dir2"
+A. cd new_dir 
+mkdir dir2
+
+
+3) 깃 초기화
+git init : .git에 모든 변경사항(스냅샷)이 저장이 된다.
+
+
+4) 상태 체크
+git status 
+
+깃이 모르는 파일일 경우
+untracked -> 'add'
+
+ex) git add animals.txt
+git status
+
+add -> commit
+
+-branch 정보 : main
+- f37dfle : 키정보
+-init commit : 메세지
+
+-git status
+-git add <파일명>
+git commit -m <메세지>
+
+<수정 사항> 수정후에
+-git status
+-git add <파일명>
+git commit -m <메세지>
+

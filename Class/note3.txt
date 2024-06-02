@@ -1,0 +1,177 @@
+3월 25일
+
+1. Q. 알파벳 중복없이 정렬해서 출력하는코드
+A. sort grades | cut -f1 | uniq ( 내가 쓴답)
+cut -f1 grades | sort | uniq 
+
+2. sort -n " string -> num
+1, 11 , 111, 2 이럴때
+1 , 2, 11, 111 
+
+
+3. git
+- 여러 파일을 한꺼번에 스테이징 하기
+- git add .
+
+- git commit -> txt
+- git commit -m " 메세지 " ( 메세지를 남기겠다)
+- 매수업에 커밋으로 파일을 저장하는 연습하기
+
+4. 문서 편집기
+- vi, vim, emacs, notepad++, ...
+- "vi"sual edtior
+- vim : -vi improved ( 정규표현식, ...)
+- 프롬프트에서 파일을 직접 편집할수 있게해주는 툴
+-특징 
+ - 화면 단위 편집기 
+ - 유닉스 게열에서 가장 많이 사용함
+ - 텍스트 편집 기능만 제공함
+ - " less " << 어딘가로 들어갔던애였는데 비슷
+ - 모드 : 일반모드 <-> 입력모드 <-> 명령모드  
+   - ESC로 모드 전환
+   - 명령모드 : 파일 저장, 덮어쓸건지, 빠져나갈건지 
+   => vi로 파일 열기 -> 입력모드 -> ESC ( 명령문 진입) -> 빠져나가기
+
+  -입력모드 : (편한거 쓰면됨)
+  - i : 현 커서에서 입력
+  - a : 현 커서에서 한 칸 뒤에서 입력
+  - o : 한 줄 추가후 입력
+
+ - 명령모드 : 
+  :wq! + enter
+
+- 나오는방법 :
+:q! + enter
+
+-  set -o vi
+- $HOME/.bashrc 열어서 여기에 set -o vi
+
+-vim 라인에서 enter
+
+- 깃 초기화  -> 깃 시작
+
+깃이랑 vim은 다른거임
+깃은 저장하고 관리
+vim은 명령 느낌 (파일을 열어서 수정하고 그런거)
+
+
+5. 패턴 매칭
+왜 하는데 이거를?
+1.img 2.img ......
+img 를 가지고 있는 파일들을 한번에 저장하고싶음
+
+
+ - 포롬프트에서 셸, 프로그램이 작동한다. 
+ex) grep Linux sample.txt 일때
+    (프로그램(grep) + 셸(Linux sample.txt)
+ - 프롬프트는 우리가 명령을 실행하는 곳
+ - 셸은 사용자와 리눅스 운영체제 를 연결해주는 매개체 
+ 리눅스 - 셸, 프롬프트 - 사용자 
+ - 셸의 역할은 명령 실행, 와일드카드,파이프라인 처리한다.
+
+ex) grep Linux *.txt 
+*.txt -> sample.txt , a.txt , .... 셸이 목록으로 만드는것
+ - 셸이 패턴매칭을 처리하여 결과물을 프로그램에 보낸다.
+
+ex) head xxx | grep | ... ( 파이프라인의 결과물도 셸이 하는것)
+
+* ? [ ] << 얘네들이 와일드카드
+
+-  * 
+  - zero or more 
+  - *.txt : .txt, animals.txt , ..+.( @@.txt 이렇게 생긴애들 잡는거) 
+  a.txtt( 이런건 안됨)
+  - 0개 이상의 연속열과 일치하는
+
+- ? 
+  - 1개 매칭
+  ch1, ch2, ch3 , ... ch 100
+  - grep Linux ch? >>>>> 한자리수만 매칭
+  - grep Linux ch?? >>>>> 두자리수만 매칭
+
+
+- [ ]
+  - 대괄호 안에 열거 되어 있는 것중  일치하는 문자열 1개있을때
+  - grep Linux ch[12345] #이중에서 1,2,3,4,5 중하나 매칭
+    12 , 123 이런거 안됨 
+  - grep Linux ch[1-5] 사용가능 
+
+Q. 짝수로 끝나는 모든 파일
+A.  grep Linux ch*[24680]
+
+Q. 대문자로 시작하고, 언더스코어 포함되어 있는 파이썬 파일 매칭
+cf) [a-z] 소문자 [A-Z] 대문자 .py (파이선확장자)
+A. grep Linux [A-Z] *_ *.py
+
+Q. /etc 디렉터리 안에 파일 학장자가 .conf인 파일 목록 조회하기
+A. ls /etc / *.conf
+- 매칭되는 파일이 없으면 에러
+ls *.doc
+- 디렉토리 경로, 파일명 
+
+
+6. 변수 평가
+- "평가" 변수를 리터럴 값으로 치환하여 값을 평가함
+$VAR << $+변수이름  - 이미 지정된 변수
+$var   << 사용자가 지정하는 변수
+
+ls $var -> ../ ( 변수도 셸이 변경을 한다)
+ex) var=./notes/w3.txt일때
+ls ./notes/w3.txt 로 인식하는거
+
+- $HOME : 루트 디렉터리
+- $USER : 사용자명
+
+- echo
+- printenv
+
+ex) echo my directory is $HOME 이렇게 입력하면
+my directory is /home/runner << 이렇게 출력됨
+즉 $HOME값이 나옴
+
+- 변수 설정하기
+name=lee 
+ - 공백 없어야 함(공백이 생기면 프로그램으로 인식하기때문)
+ - 변수=값 
+ - 변수를 사용하려면 앞에 "$변수명" << 이렇게 사용
+
+Q. age라는 변수에 자신의 나이를 담고 " 내 나이는...살이다" 출력
+A. age=31
+   echo "내 나이는 $age 살이다" 
+
+ - 내가 자주 사용하는 디렉터리가 있으면 그거를 변수로 사용
+-  dri1=$HOME/notes/chapter1/ 이거를
+  $dir1 이거로 사용
+
+- cd $dir1
+
+7. 패턴과 변수
+ mammals
+ - lizard.txt
+ - snake.txt
+ reptiles 
+
+mv<from><to>
+mv notes tmp << 이렇게 이용
+Q. 변수에 담아서 이동시키려면?
+A. 
+dir1=mammals/*.txt
+mv $dir1 reptiles  
+
+Q. 패턴매칭으로 이동시키려면?
+A. mv mammals/*.txt reptiles
+
+
+8. alias
+ - 단축어를 별명으로 설정하기
+ - alias uniqc="uniq -c "
+uniqc | ... << 이렇게
+ - removeall="rm-r"
+
+- shadowing
+ alias grep = "grep Linux *.txt"
+ alias ls="ls -l"
+
+-alias 
+ - unalias uniqc << 별명 지우기
+

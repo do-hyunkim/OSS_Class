@@ -1,0 +1,192 @@
+4.29 월
+
+5.6 휴강
+5.13 온라인
+
+----------------------------------------------------------------
+기말 start
+
+# 변수
+- 선언
+  var="contents"
+  var=kim
+  var="kim lee hong" 
+ - 공백이 업어야 한다.
+ - 데이터 타입이 없음, 모두 문자열로 인식된다.
+ - 사용
+ echo $var
+ - 셸이 값을 치환한다.(프로그램 구동 시)
+ echo kim
+- [a-zA-Z_0-9]* 
+
+##할당
+- 프로그램 이름도 변수로 받을 수 있다.
+ex)
+command=wc
+op=-c
+$command $op animals.txt (이런거도 가능함)
+
+- 다른 변수도 새 변수로 할당할 수 있다.
+ex)
+var2=$var
+echo $var2 ( 이렇게 했을때 var값 똑같이 나옴)
+
+- 선언하지 않은 변수 : null값이 설정됨 
+(보통은 오류가 나오는데 셸에서는 null값으로 설정되는것)
+(오류 나지 않는다)
+ - 명령 라인엔 넣어도 무시됨
+
+##null 
+var=
+var=""
+var=''
+(세가지 null값 표현 방법)
+
+var=' ' #공백이 1개
+
+#변수 활용하기
+- file=grades -> grades1
+file=grades1 
+${변수} 구조
+${file}1 >>>>>이렇게 되면 grades1 이 되는것
+
+Q. grades -> grades1
+A. mv $file ${file}1
+
+
+## substring 추출하기
+- animals.txt -> animal.md 
+- ${var:start:size}
+- ${var:0:4} # start:end
+
+A. 
+file=animals.txt
+mv $file ${file:0:7}.md
+
+## $(( 변수 )) 구조
+- 수학 연산을 가능하게 하는구조
+ex)
+echo $((4 + 8 ))
+four=4
+echo $((four + 8 ))
+- 숫자인 문자열이 들어왔을때, 숫자로 인식함
+
+Q. 5를 변수에 담고 활용해서 15를 변수에 담기
+A.
+five=5
+fifteen=$(( five*3 ))
+
+- $(( ten = ten + 1 ))
+여기서  변수 ten이 선언되지 않았으면 ten은 null값으로 0이 되고
+ten = ten + 1 이되서 0 + 1 꼴의 형태로 저장되서 1이 출력됨
+초기값 0
+
+- 비교 연산
+ $(( ten > 0 ))  # 1==True , 0==False
+
+Q. 임의의 수 num이 2의 배수인지 확인하는 코드 작성하기
+A.
+num=11 ; echo $(( num % 2==0 ))
+
+## $( ) 표현
+- 명령의 결과값을 변수에 담고 싶을 때
+ex)
+cat /etc/passwd | cut -d: -f1 이값을 변수에 담고싶으면
+result=$( cat /etc/passwd | cut -d: -f1 ) 
+이렇게하면 결과값이 변수에 저장할수 있다.
+
+
+# 스트립트 파일 작성하기
+- 파일 확장자는 .sh or none
+-
+1) 파일을 실행가능한 상태로 바꾼다.
+chmod +x ex1
+./ex1 << 이렇게 하면 출력 가능
+2) 실행하기 
+- shebang 달기
+#!/bin/bash
+
+g# 인수
+
+## 위치 인수 (positional arguement)
+- $n (숫자 9까지)
+- 외부에서 인수를 받아와서 사용할 때
+- $10 이면 ${10} : 10 이상일 때
+
+## $#
+- 총 인수 개수 
+"$#"(큰 따옴표 사용)
+'$#' (x) 
+
+name="$1"
+echo $name 이런식으로 사용 많이함
+- 큰 따옴표로 인수 감싸는 습관 들여야함.
+
+Q. 디렉토리를 인수로 받아서, 파일과 디렉토리 개수를 세는 스크립트 짜기
+...sh
+파일명 : count
+-출력-
+현재위치 : ...
+파일 ...개, 폴더 ...개 입니다.
+test case 1 : .
+test case 2 : *
+
+
+A. 
+#!/bin/bash
+dir="$1"
+files=$( ls -l $dir | cut -c1 | grep -v "d" | wc -l
+directory=$( ls -l $dir | cut -c1 | grep "d" | wc -l
+echo "현재 위치: $dir"
+echo "파일 $files개, 폴더 $directory개입니다."
+
+
+#!/bin/bash
+directory="$1"
+num_dir=$(ls -l $directory | cut -f1 | grep d | wc -l)
+num_file=$(ls -l $directory | cut -f1 | grep -v d | wc -l)
+echo "현재 위치: $(pwd)"
+echo "파일 ${num_file}, 폴더 ${num_dir}개입니다."
+
+pwd="pwd"
+file=$(ls | grep -v d |wc -l)
+folder=$(ls | grep d | wc -l)
+echo "현재 위치: $(pwd)"
+echo "파일 "$file"개, 폴더 $folder개"
+0.
+
+## $* 
+- 모든 인수를 출력해주는 변수
+- 각각을 다 프린트하는것
+
+# 전화번호부 관리 스트립트 만들기
+1) 검색
+./book.sh 이름 
+
+book="./book.txt"
+name="$1"
+number="$2"
+sed -n "/${name}/p" $book
+
+name="$1"
+grep $name book.txt
+이렇게 해놓고
+./book.sh Minsu 이렇게하면됨
+
+2) 추가
+이름, 번호를 인자로 넣어 추가하기
+
+3) 삭제
+이름으로 검색해서 이름,번호를 삭제하기
+
+
+
+
+
+
+
+
+
+
+
+

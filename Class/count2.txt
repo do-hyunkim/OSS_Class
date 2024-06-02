@@ -1,0 +1,21 @@
+#!/bin/bash
+
+value=$S1
+if [ $# -eq 0 ]
+then
+	exit 1
+elif [ $# -eq 2\
+then
+	exit 2
+elif [ $# -eq 1 ]
+	case $value in
+	1) echo "Jan";;
+	2) echo "Feb";;
+	3) echo "Mar";;
+	4)
+
+
+	*) echo 유효하지않은값
+	esac
+fi
+

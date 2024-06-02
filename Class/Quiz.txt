@@ -1,0 +1,373 @@
+Quiz 1 
+
+Q1. 셀에서 "명령(command)" 의 세가지 의미를 서술하시오
+A. 
+1. 하나의 단어로 이름 붙여진 실행 가능한 프로그램, 셸 내장명령
+2. 단순명령 : 프로그램 + 내용( 명령인수)
+3. 복합명령 : 프로그램 + 옵션 + 내용
+4. 결합명령 : 단순명령이 여러개 있는것
+
+Q2. 표준 입력과 출력이 무엇인지 설명하시오
+A.
+표준입력 : stdin 리눅스 운영체제가 키보드를 통해 입력받는 입력스트림
+-프롬프트에서 명령을 입력하면, 표준입력을 통해서 명령이 입력된다.
+표준출력 : stdout 화면에 결과를 출력하는 출력 스트림
+-명령을 입력하면, 표준 출력을 통해서 출력
+
+Q3. /bin에 존재하는 파일 내용을 라인별로 한 화면에 명령행은?
+A.
+ls -l /bin | less 
+(less 는 한화면에 나오게 만들어줌 나갈떄는 q로 나가면됨)
+(페이지 이동은 키보드의 화살표, page up/down 키를 이용)
+
+Q4. 셸에서 파이프란?
+A.
+한 명령어의 출력값을 다른 명령어의 입력값으로 보내는 역할
+두 명령 사이에 삽입하여 명령을 조합하는 역할
+" | "
+
+Q5. 현재 디렉터리에 존재하는 파일 수를 출력
+A. ls -l | wc -l
+
+Q6. /bin에 존재하는 파일중 처음 5개만 골라 앞글자만 출력
+A. ls /bin | head -n5 | cut -c1
+
+Q7. animals.txt 에서 4번째 필드인 저자명 중 이름만(성 제외) 모두출력
+A. cut -f4 animals.txt | cut -d, -f2
+
+Q8. 셸이란 무엇인가?
+A. 리눅스커널과 사용자를 연결해주는 인터페이스
+
+Q9. less 명령 실행시 화면에서 빠져나올때 입력하는것은?
+A. q
+
+Q10. sample.txt의 1번쨰 필드를 출력하되 , 마지막 두글자만 출력하시오
+ex) python Promgraming Python 2010 Lutz, Mark
+출력값 : on
+A.
+cut -f1 sameple.txt  | rev | cut -c1,2 | rev
+
+
+Quiz 2
+
+Q1. 새로운 파일(sample.txt)이 생성됬을때 이 파일을 커밋하는 한 묶음의 코드
+A. 
+git status : 저장소의 상태를 확인. 변경된 파일이나 새 파일이 있는지 여부를 보여줌
+git add sample.txt : 변경된 파일이나 새 파일을 staginf area에 추가.
+이 명령어를 통해 git은 해당 파일을 추적하고, 
+다음 커밋에 포함시킬 준비가되있다는것을 알 수있다
+git commit -m "add sample":
+-m 옵션을 사용하여 커밋 메세지를 지정.
+
+Q2. 명령어로 다음의 디렉터리를 구현하시오
+- 현재위치 = company
+- 노란바탕의 'Folders'에 해당하는 부분을 구현
+
+A.
+mkdir "DepartmentX"Shared infrastructure"
+mkdir "DepartmentY/Team A"
+mkdir "DepartmentY/Team B/Product1"
+mkdir "DepartmentY/Team B/Product2"
+
+#or 위치로 이동해서 만든다면
+mkdir "DepartmentX""DepartmentY""Shared infrastucture"
+cd"DepartmentY"
+mkdir"TeamA""TeamB"
+cd"TeamB"
+mkdir"Prodcut1""Product2"
+
+Q3. 깃의 세가지 상태와 의미한느 바를 서술하시오
+A.
+1.수정 - 파일이 수정되었지만 커밋하지 않은 상태
+2.스테이지-수정한 파일을 add하여 곧 커밋할 것이라고 표시한상태
+3.커밋 - 데이터가 로컬 데이터베이스에 안전하게 저장된 상태.
+ 스냅샷이 저장된 상태
+
+Q4. 두 코드의 차이점을 논하시오
+1. uniq sample.txt | sort
+2. sort | uniq sample.txt
+A.
+uniq는 인접한 문자열의 중복을 삭제한다.
+1. 중복된 문자열을 제거해서 보여준후 정렬
+2. 정렬 후 중복된 문자열을 제거
+
+Q5. /etc/passwd 디렉터리에서 로그인하지 않은 경우의 갯수를 구하는 코드작성
+ex) daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+A.
+grep nologin/etc/passwd | wc -l
+
+Q6. /usr/lib에서 파일의 개수를 알아내는 코드를 작성
+A.
+ls -l /usr/lib | cut -c1 | grep -v d | wc -l
+
+ls -l /usr/lib: /usr/lib 디렉터리에 있는 모든 파일과 디렉터리의 자세한 목록을 출력합니다.
+cut -c1: 각 행의 첫 번째 문자만을 추출합니다.
+grep -v d: 추출된 문자열 중에서 d 문자를 포함하지 않는 행만 출력합니다. 
+즉, 디렉터리를 제외한 파일만 출력됩니다.
+wc -l: 출력된 행의 개수를 세어서 출력합니다.
+
+Q7. graded 파일에서 이름의 마지막 글자만 추출했을 때 각 알파벳의 중복 개수를 세는코드
+파일 예시 
+C Geraldin
+B Carmine
+A Kayla
+A Sophia
+B Haresh
+C Liam
+B Elijah
+B Emma
+A Olivia
+D Noah
+
+A. 
+cut -f2 grades | rev | cut -c1 | sort | uniq -c
+
+Q8. 현재 디렉터리에 100개의 .jpg 파일이 존재한다고 가정
+이중 중복된 파일이 있는지 확인하는 코드를 작성
+(md5sum 프로그램을 활용)
+
+A. md5sum *.jpg | cut -f1-32 | sort | uniq -c | sort -nr | grep -v"1"
+
+Q9. sample.txt의 1번째 필드를 출력하되, 마지막 두글자만 출력
+sample.txt 예시 : pyhton Programming Python 2010 Lutz,Mark
+출력값 예시 : on
+
+A. 
+cut -f1 sample.txt | rev | cut -c-2 | rev
+cut -f1 sample.txt | rec | cut -c1,2 | rev
+
+
+Quiz 3 .
+
+Q1. animals.txt 에서 4번째 필드인 저자명 중 이름만(성 제외) 모두 출력
+ex : pyhton ProgrammingPython 2010 Lutz,Mark
+정답예시 : mark
+
+A. cut -f4 animals.txt | cut -d, -f2
+
+Q2. 변수 USER 값을 출력
+A. echo $USER
+
+Q3. alias ls="ls -l" 에 대해 설명하시오
+A. 쉐도잉. 동일한 프로그램으로 별명을 짓는것
+기존 명령보다 우선처리됨. 현재 셸에만 영향을 줌
+
+Q4. 숫자를 기준으로 내림차순하는 명령을 단축하는 코드를 작성
+A. 
+alias sortnum="sort -nr"
+
+Q5. 다음에 주어진 디렉토리에서, 현재 디렉터리를 TeamA라고 가정할때
+Product2를 자주 사용하는 디렉터리로 저장하는 코드를 작성하고
+그 디렉터리로 이동하시오
+A.
+prouct2="$HOME/Company/DepartmentY/TeamB/Product2"
+cd $product2
+
+Q6. 셸의 역할 세가지를 설명
+A.
+1. 패턴 매칭 평가 (와일드카드처리)
+2. 프로그램 명령 실행
+3. 파이프라인 처리
+
+Q7. 짝수로 끝나는 .jpg 파일중 모음으로 시작하는 파일을 고르는 명령을 작성
+A. 
+ls [aeiou]*[02468].jpg
+
+Q8. 절대경로와 상대결로를 서술하시오
+A.
+절대경로 :  루트에서 시작. 슬래시로 시작한다.
+상대경로 : 현재 디렉터리에서 시작. 부모는.., 현재는 .로 표현한다.
+
+Q9. /bin 에 존재하는 파일 중 마지막 5개만 골라 앞 두글자 까지만 출력
+A. 
+ls /bin | rev | head -5 | cut -c1,2
+
+
+Quiz 4
+Q1. 최근 15개 명령 히스토리를 history15 에 저장하는 커맨드라인 작성
+A. 
+history 15>history15
+
+Q2. 파일을 삭제할때 재확인하는 프로세스를 rm으로 지정하는 커맨드라인 작성
+A.
+alias rm = "rm-i"
+
+
+Q3. 이전 명령의 글자 수를 세어라
+A.
+!! | wc -c
+
+
+Q4. 14번 명령 히스토리를 읽는 방법은?
+A.
+!14
+
+Q5. 명령 히스토리에서 동일한 명령이 1번만 저장되도록 하려면?
+A.
+$HISTCONTROL=ignoredups
+
+
+Q6. 명령 히스토리 1000개를 저장하도록 커맨드라인을 작성
+A.
+$HISTSIZE=1000
+
+
+Q7. 두 명령행의 차이를 서술
+1. echo "Welcome, $USER"
+2. echo 'Welcome, $User'
+A.
+1번은 큰 따옴표를 사용했기 때문에 $USER 뱐수가 평가되어 출력
+반면, 2번은 작은 따옴표를 사용했기 때문에 $기능이 해제되고,
+$USER가 문자열 그대로 출력된다.
+
+
+Q8. 파일이 classA, classB, ...classN 까지 존재하고 파일에는 각 반의 학생명단이 있다고 가정
+전체 학생 명단을 담은 student_list 파일을 생성하는 명령을 작성하라.
+A.
+cat class* > student_list
+
+Q9. 셸에서 상속되는 3개의 표준스트림을 설명하시오.
+A.
+stdin(표준입력) : 키보드로부터 입력되는 입력스트림
+stdout(표준출력) : 터미널로 나가는 출력스트림
+stderr(표준오류) : 오류 데이터를 기록하는 촐력스트림, 표준출력과 별개로 움직인다.
+
+
+Q10. /etc/passwd 디렉터리에서 로그인하지 않은 경우 갯수를 구하는코드 작성
+A.
+grep nologin/etc/passwd | wc -l
+
+
+Q11. head와 ls의 차이를 설명하시오
+A.
+ls는 디렉터리나 파일 목록을 조회할때 사용
+head는 지정된 파일의 내용을 일부 조회할때 사용
+
+
+Q12. 셸 초기화파일의 전체 디렉토리를 쓰시오
+A. 
+$HOME/.bashrc
+
+
+Q13. 디렉토리명이 다음과 같다 "how are you?"
+이 디렉토리를 조회하는 커멘드라인을 작성하라.
+A.
+ls "\"how are you?\""
+ls\"how\are\you\?\"
+
+
+Q14. 명령 히스토리에서 echo 명령만 골라 횟수를 세고 결과를
+cd_history.txt에 저장하라.
+A.
+history | grep -w echo | wc -l > cd_histroy.txt
+
+
+Q15. 현재 디렉터리에 100개의 .jpg 파일이 존재한다고 가정
+이중 중복된 파일이 있는지 확인하는 코드를 작성
+A.
+md5sum *.jpg | cut -f1-32 | sort | uniq -c | sort -nr | grep -v"1"
+
+Q16. 셸이란 무엇인가요?
+A.
+리눅스 커널과 사용자를 연결해주는 인터페이스
+사용자가 입력하는 명령을 읽고, 해석하고, 프로그램을 실행시킴
+
+Q17. 셸에서 명령의 세가지 의미를 서술하시오
+A.
+1. 하나의 단어로 이름 붙여진 실행 가능한 프로그램. 셸 내장명령
+2. 단순명령 - 프로그램 + 명령 인수
+3. 결합명령 - 단순명령이 여러개있는것
+
+
+Q18. 새로운 파일(sample.txt)이 생성되었을 떄 이 파일을 커밋하는
+한묶음으 ㅣ코드를 작성
+A.
+git status
+git add sample.txt
+git commit -m "add sample"
+
+
+Q19. 절대경로와 상대경로를 서술하시오.
+A. 
+- 절대경로 : 루트에서 시작, 슬래시로 시작한다.
+- 상대경로 : 현재 디렉터리에서 시작, 부모는 .. , 현재는 . 로표현한다.
+
+
+Q20. 깃의 세가지 상태와 의미하는 바를 서술하시오.
+A.
+1. 수정(modified) : 파일이 수정되었지만 커밋하지 않은 상태.
+2. 스테이지(staged) : 수정한 파일을 add하여 곧 커밋할 것이라고 표시한 상태
+3. 커밋(committed) : 데이터가 로컬 데이터베이스에 안전하게 저장된 상태.
+스냅샷이 저장된 상태
+
+
+Quiz 4
+Q1. animals.txt에서 a를 XXX를 변경하시오
+A. 
+tr a XXX < animals.txt
+
+Q2. 파일 animals.txt 의 파일명을 mammals.txt로 변경하시오
+A.
+mv animalst.txt mammals.txt
+
+Q3. 현재 디렉토리에 숨겨진파일(혹은 디렉토리)을 포함한 전체개수 세시오
+A.
+ls -a | wc -l
+
+Q4. ls로 파일을 조회하면 어떤 결과물이 반환되는가?
+A.
+파일명이 그대로 반환된다.
+
+Q5. grades 파일을 내림차순하여 동일한 이름으로 저장
+A. 
+sort -nr grades -o grades
+
+Q6. grades에서 A를 삭제하시오
+A. 
+tr -d 'A' < grades
+
+
+Q7. 현재 디렉토리에서 대문자로 시작하는 파일/디렉토리 이름을 dir.txt에 저장하라
+오류도 함께
+A.
+ls [A-Z]* 2>dir.txt
+
+Q8. 현재 디렉토리에서 확장자가 세자리수인 파일을 검색하라.
+A.
+ls *.???
+
+Q9. ln의 목적을 설명하시오
+A.
+파일을 복사하여 동기화 하기위함
+메모리 절약도 되고, 이후의 모든 수정이 반영된다.
+동일한 파일이 다른 디렉토리에도 존재할 경우 사용
+
+Q10. 현재 디렉토리를 영어로 2가지 이상쓰시오
+A.
+working directory, current directory
+
+Q11. 파일 sample.sh, sample.txt를 하위 디렉토리인 tmp파일로 옮기시오
+A.
+mv sample.*/tmp
+
+Q12. notes/w5.txt를 현재 디렉토리로 복사히시오
+A.
+cp notes/w5.txt.
+
+Q13. 최근 15개 명령 히스토리를 history15에 저장하는 커맨드라인을 작성
+A.
+history 15 > history15
+
+Q14. 짝수로 끝나는 .jpg파일 중 모음으로 시작하는 파일을 고르는 명령을 작성
+A. 
+ls [aeiou]*[02468].jpg
+
+Q15. /etc/passwd 디렉토리에서 로그인하지 않은 경우 갯수를 구하는 코드 작성
+ex> daemon:x:1:1daemon:/usr/sbin:/usr/sbin/nologin
+A.
+grep nologin/etc/passwd | wc -l
+
+
+Q16. 셸이란 무엇인가요?
+A.
+리눅스 커널과 사용자를 연결해주는 인터페이스
