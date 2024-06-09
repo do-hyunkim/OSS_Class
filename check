@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+	echo 종료
+	exit 1
+fi
+
+user=$1
+
+while true; do # while 무한루프
+	if who | grep -w "$user" ;then
+		echo $user 로그인함!
+		exit 0
+	fi
+	sleep 60
+done
