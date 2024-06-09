@@ -44,7 +44,7 @@ while read -r line || [ -n "$line" ]; do
 
     if [ "$name" == "$NAME" ]; then
         if [ "$phone" == "$PHONE" ]; then
-            echo "동일한 이름과 전화번호가 이미 존재합니다."
+            echo "이름과 전화번호가 이미 존재합니다."
             exit 0
         else
             sed -i "/^$name /s/.*/$NAME $PHONE $AREA/" "$PHONEBOOK"
@@ -64,6 +64,6 @@ fi
 
 # 전화번호부 정렬
 sort -o "$PHONEBOOK" "$PHONEBOOK"
-echo "전화번호가 성공적으로 추가되었습니다."
+echo "전화번호가 추가되었습니다."
 
 exit 0
