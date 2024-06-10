@@ -43,3 +43,13 @@ git checkout <name>
 
 ## merge 
 - 메인 브랜치에 가지 브랜치를 병합하는 행위
+
+git checkout -b <name>
+
+-b : 브랜치 생성 + 이동
+
+- 메인 브랜치로 이동해야 한다.
+git merge <name>
+
+Q. 브랜치생성 -> 이덩 -> 파일 만들고 작업한다. -> 커밋
+
