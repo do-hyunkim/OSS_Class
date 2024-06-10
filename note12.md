@@ -51,5 +51,55 @@ git checkout -b <name>
 - 메인 브랜치로 이동해야 한다.
 git merge <name>
 
-Q. 브랜치생성 -> 이덩 -> 파일 만들고 작업한다. -> 커밋
+Q. 브랜치생성 -> 이동 -> 파일 만들고 작업한다. -> 커밋
+
+
+### 병합 전략
+- ort(fast-forward) : 기본 전략, 브랜치 A의 포인터가 최신 포인터 B로 이동하는 것
+- recursive 전략 : 두 브랜치의 커밋 포인터가 공통된 조상으로 옮겨가서 병합하는 것
+            |  |  |  | < main
+    분기점
+    |
+            |  |  | < issue
+
+  
+# 브랜치 삭제하기
+git bracnh -d <name>
+
+# 브랜치 충돌 가정하기
+- 같은 파일을 두 브랜치에서 다르게 수정하기 -> 머지
+  CONFLICT (content) : Merge conflict in test
+
+- 상태 확인 먼저하기, 어떤 지점에서 실패가 일어났는지 파악하기
+- 해결 방법.
+  1. 수동으로 고친다.
+  2. git mergetool 
+      opendiff : 두 브랜치가 충돌된 지점이 하이라이트되고, 직접 vi를 이용하여 수정할수 있다.
+     - 스테이징까지는 자동으로 해준다.
+  4. 상태체크, 커밋
+  5. 병합
+    "Already up to date."
+
+## 병합된 브랜치 확인하기
+git branch --merged
+git branc --no-merged (병합안된 브랜치 확인)
+
+- 병합되지 않은 브랜치는 -d 로 삭제할 수 없다.
+  -D 강제 삭제한다.
+
+# 리모트 브랜치 
+  - remote tracking branch 라는 원격 저장소의 커밋 지점을 관리하는 포인터가 존재한다.
+  - 로컬에 존재하지만 임의로 움직이지는 않는다.
+  - 이름 : remote/branch
+    main develop
+    origin/main  origig/develop (원격저장소 브랜치임)
+
+## 프로세스
+- 로컬에서 브랜치를 만들더라도 원격에 브랜치가 생성되지 않는다.
+  1. 브랜치 생성하기
+  2. 원격에 그 브랜치 push하기
+  3. 깃허브에서 확인하기
+
+## 원격 브랜치 삭제하기
+git push origin --delete <name> 
 
