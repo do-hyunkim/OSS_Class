@@ -10,7 +10,9 @@ in_path()
    # IFS (internal field separator)에 임시 할당하고,
    # 프로그램이 종료되면 재할당하는 방식임.
 
-   cmd=$1        ourpath=$2         result=1
+   cmd=$1        
+   ourpath=$2         
+   result=1
    oldIFS=$IFS   IFS=":" # $IFS는 디폴트값이 공백임
 
    for directory in $ourpath

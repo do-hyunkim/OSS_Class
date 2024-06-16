@@ -5,36 +5,36 @@
 . library.sh
 
 # 1. validint 작동 확인
-echo "First off, do you have echo in your path? (1=yes, 2=no) "
+echo "처음으로, echo 명령어가 경로에 있나요? (1=예, 2=아니오) "
 read answer
 while ! validint $answer 1 2 ; do
-  echo "Try again. Do you have echon "
-  echo "in your path? (1=yes, 2=no) "
+  echo "다시 시도하세요. echo 명령어가 "
+  echo "경로에 있나요? (1=예, 2=아니오) "
   read answer
 done
 
 # 2. checkForCmdInPath 작동 확인
 if ! checkForCmdInPath "echon" ; then
-  echo "Nope, can't find the echo command."
+  echo "아니요, echo 명령어를 찾을 수 없습니다."
 else
-  echo "The echon command is in the PATH."
+  echo "echo 명령어가 PATH에 있습니다."
 fi
 
 echo ""
-echo "Enter a year you think might be a leap year: "
+echo "윤년일 것 같은 연도를 입력하세요: "
 read year
 
 # 숫자 유효성 및 범위 (1-9999) 확인
 while ! validint $year 1 9999 ; do
-  echo "Please enter a year in the correct format: "
+  echo "올바른 형식의 연도를 입력하세요: "
   read year
 done
 
 # 3. isLeapYear 작동 확인
 if isLeapYear $year ; then
-  echo "You're right!  $year was a leap year."
+  echo "맞아요! $year 년도는 윤년이었습니다."
 else
-  echo "Nope, that's not a leap year."
+  echo "아니요, $year 년도는 윤년이 아닙니다."
 fi
 
 exit 0

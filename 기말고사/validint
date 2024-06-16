@@ -10,7 +10,7 @@ validint()
   number="$1";      min="$2";      max="$3"
 
   if [ -z $number ] ; then
-    echo "You didn't enter anything. Please enter a number." >&2 ; return 1
+    echo "숫자를 입력하세여" >&2 ; return 1
   fi
 
   # 첫 글자가 '-'인지 확인:
@@ -25,7 +25,7 @@ validint()
 
   # 숫자 아닌 글자 확인:
   if [ ! -z $nodigits ] ; then
-    echo "Invalid number format! Only digits, no commas, spaces, etc" >&2
+    echo "잘못된 숫자 형식입니다." >&2
     return 1
   fi
 
@@ -36,6 +36,7 @@ validint()
       return 1
     fi
   fi
+  
   if [ ! -z $max ] ; then
     # 입력값이 최대값보다 큰지 확인:
     if [ "$number" -gt "$max" ] ; then
