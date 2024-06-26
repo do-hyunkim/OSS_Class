@@ -219,3 +219,672 @@ exit 0
 
 inpath library.sh main.sh valid-date validint
 
+inpath
+
+#!/bin/bash
+
+in_path()
+{
+  cmd=$1
+  ourpath=$2
+  result=1
+
+  oldIFS=$FIS
+  IFS=":"
+
+  for directory in $ourpath
+  do
+    if [ -x $directory/$cmd ] ; then
+      result=0
+    fi
+  done
+
+  IFS=$oldIFS
+  return $result
+}
+
+checkForCmdInPath()
+{
+  var=$1
+
+  if [ "$var" != "" ] ; then
+    if [ "$[{var:0:1"} = "/" ] ; then
+      if [ ! -x $var ] ; then
+         return 1
+      fi
+    elif !  in_path $var "$PATH" ; then
+      return 2
+    fi
+  fi
+}
+
+library.sh
+
+dir=$( dirname "$(readlink -f "${BASH_SOURCE[0]}")")
+. ${dir}/inpath
+. ${dir}/validint
+. ${dir}/valid-date
+
+valid-date
+
+#!/bin/bash
+
+isLeapYear()
+{
+  year=$1
+  if [ "$((year%4))" -ne 0 ] ; then
+    return 1
+  elif [ "$((year % 400 ))" -eq 0 ] ; then
+    return 0
+  elif [ "$((year % 100 ))" -eq 0 ] ; then
+    return 1
+  else 
+    return 0
+  fi
+
+
+valid-date
+#!/bin/bash
+
+validint()
+{
+  number="$1";
+  min="$2";
+  max="$3";
+
+  if [ -z $number ] ; then
+    echo "숫자를 입력하시오" >&2 ; return 1
+  fi
+
+  if [ "${number%${number#?}}" = "-" ] ; then
+    testvalue="${number#?}"
+  else
+    testvalue="$number"
+  fi
+
+  nodigits="$(echo $testvalue | sed 's/[[:digit:]]//g')"
+
+  if [ ! -z $nodigits ] ; then
+    echo "잘못된 숫자 형식입니다." >&2
+    return 1
+  fi
+
+  if [ ! -z $min ] ; then
+    if [ "$number" -lt "$min" ] ; then
+      echo "$number가 너무 작습니다" >&2
+      return 1
+    fi
+  fi
+
+  if [ ! -z $max ] ; then
+    if [ "$number" -gt "$max" ] ; then
+      echo "$number가 너무 큽니다." >$2
+      return 1
+    fi
+  fi
+  return 0
+}
+
+main.sh
+
+#!/bin/bash
+
+. library.sh
+
+echo "처음으로 echo 명령어가 경로에 있나요 (1=예, 2=아니오)"
+read answer
+while ! validint $answer 1 2 ; do
+  echo "다시시도하세요 . echo 명령어가"
+  echo "경로에 있나요(1=예, 2=아니요)"
+  read answer
+done
+
+if ! checkForCmdInPath "echo" ; then
+  echo "아니요 , echo 명려어는 찾을수 없슶니다."
+else
+  echo "echo 명령어가 PATH에 있습니다."
+fi
+
+echo ""
+echo "윤년일것 같은 연도를 입력하세요:"
+read year
+
+while ! validint $year 1 9999 ; do
+  echo "올바른 형식의 연도를 입력하세요: "
+  read year
+done
+
+if isLeapYear $year ; then
+  echo "맞아요 $year 년도는 윤년입니다."
+else
+  echo "아니요 $year 년도는 윤년이 아닙니다."
+fi
+
+exit 0
+
+
+
+inpath
+
+#!/bin/bash
+
+in_path()
+{
+  cmd=$1
+  ourpath=$2
+  result=1
+
+  oldIFS=$IFS
+  IFS=":"
+
+  for directory in $ourpath
+  do
+    if [ -x $directory/$cmd ] ; then
+      result=0
+    fi
+  done
+  
+  IFS=$oldIFS
+  return $result
+}
+
+checkForCmdInPath()
+{
+  var=$1
+
+  if [ "$var" != "" ] ; then
+    if [ "${var:0:1" = "/" ] ; then
+      if [ ! -x $var ] ; then
+        return 1
+      fi
+    elif !  in_path $var "$PATH" ; then
+      return 2
+    fi
+  fi
+  
+}
+
+library.sh
+
+dir=$( dirname "$(readlink -f "${BASH_SOURCE[0]}")")
+. ${dir}/inpath
+. ${dir}/validint
+. ${dir}/valid-date
+
+valid-date
+#!/bin/bash
+
+isLeapYear()
+{
+  year=$1
+  if [ "$((year % 4)) -ne 0 ] ; then
+    return 1 
+  elif [ "$((year % 100 )" -eq 0 ] ; then
+    return 0 
+  elif [ "$((year % 100))" -eq 0 ] ; then
+    return 1
+  else 
+    return 0
+  fi
+}
+
+validint
+#!/bin/bash
+
+validint()
+{
+  number="$1";
+  min="$2";
+  max="$3";
+
+  if [ -z $number ] ; then
+    echo "숫자를 입력하세요 " >&2 ; return 1
+  fi
+
+  if [ "${number%&{number#?}}" = "-" ] ; then
+    testvalue="${number#?}"
+  else
+    testvalue="$number"
+  fi
+
+  nodigit="$(echo $testvalue | sed 's/[[:digit:]]//g')"
+
+  if [ ! -z #nodigits ] ; then
+    echo "잘못된 숫자 형식입니다." >&2
+    return 1
+  fi
+
+  if [ ! -z $min ] ; then
+    if [ "$number" -lt "$min" ] ; then
+      echo "$numeber는 너무 작습니다." >&2
+      return 1
+    fi
+  fi
+
+  if [ ! -z $max ] ; then
+    if [ "$numeber" -gt "$max" ] ; then
+      echo "$number는 너무 큽니다." >&2
+      return 1
+    fi
+  fi
+  return 0
+}
+
+
+main.sh
+
+. library.sh
+
+echo "처음으로, echo 명령어가 경로에 있나요? (1=예, 2=아니오)"
+read answer
+while ! validint $answer 1 2 ; do
+  echo " 다시 시도하세요 echo 명령어가"
+  echo " 경로에 있나요? (1=예, 2아니오)"
+  read answer
+done
+
+if ! checkForCmdInPath "echo" ; then
+  echo "아니오, echo 명령어를 찾을수 없습니다."
+else
+  echo " echo 명령어가 PATH에 있습니다."
+fi
+
+echo ""
+echo "윤년일것 같은 연도를 입력하세요:"
+read year
+
+while ! validint $year 1 9999 ; do
+  echo "올바른 형식의 연도를 입력하세요: "
+  read year
+done
+
+if isLeapYear $year ; then
+  echo "맞아요 $year 년도는 윤년이었습니다."
+else
+  echo "아니요 $year 년도는 윤년이 아닙니다."
+fi
+
+exit 0
+
+
+inpath
+
+#!/bin/bash
+
+in_path()
+{
+  cmd=$1
+  ourpath=$2
+  result=1
+
+  oldIFS=$IFS
+  IFS=":"
+
+  for directory in $ourpath
+  do
+    if [ -x $directory/$cmd ] ; then
+      result=0
+    fi
+  done
+
+  IFS=$oldIFS
+  return $result
+}
+
+checkForCmdInPath()
+{
+  var=$1
+    if [ "var" != "" ] ; then
+      if [ "${var:0:1}" = "/" ] ; then
+        if [ ! -x $ var ] ; then
+          return 1
+        fi
+      elif !  in_path $var "$PAHT" ; then
+        return 2
+      fi
+    fi
+}
+
+#!/bin/bash
+
+in_path()
+{
+  cmd=$1
+  ourpath=$2
+  result=1
+
+  oldIFS=$IFS
+  IFS=":"
+
+  for directory in $ourpath
+  do
+    if [ -x $directory/$cmd ] ; then
+      result=0
+    fi
+  done
+
+  IFS=$oldIFS
+  return $result
+}
+
+checkForCmdInPath()
+{
+  var=$1
+
+  if [ "$var" != "" ] ; then
+    if [ "${var:0:1}" = "/" ] ; then
+      if [ 1 -x $var ] ; then
+        return 1
+      elif !  in_path $var "PATH" ; then
+        return 2
+      fi
+    fi
+}
+
+inpath
+
+#!/bin/bash
+
+in_path()
+{
+  cmd=$1
+  ourpath=$2
+  result=1
+
+  oldIFS=$IFS
+  IFS=":"
+
+  for directory in $ourpath
+  do
+    if [ -x $directory/$cmd ] ; then
+      result=0
+    fi
+  done
+
+  IFS=$oldIFS
+  return $result
+}
+
+ checkForCmdInPath()
+ {
+   var=$1
+
+   if [ "$var" != "" ] ; then
+     if [ "${var:0:1}" = "/" ] ; then
+       if [ ! -x $var ] ; then
+         return 1
+       fi
+     elif !  in_path $var "$PATH" ; then
+       return 2
+     fi 
+   fi
+}
+
+inpath
+
+#!/bin/bash
+
+in_path()
+{
+  cmd=$1
+  ourpath=$2
+  result=1
+
+  oldIFS=$IFS
+  $IFS=":"
+
+  for directory in $ourpath
+  do
+    if [ -x $directory/$cmd ] ; then
+      result=0
+    fi
+  done
+
+  IFS=$oldIFS
+  return $result
+}
+
+checkForCmdInPath()
+{
+  var=$1
+
+    if [ "$var" != "" ] ; then
+      if [ "{var:0:1}" = "/" ] ; then
+        if [ ! -x $var ] ; then
+          return 1
+        fi
+      elif !  in_path $var "$PATH" ; then
+        return 2
+      fi
+    fi
+}
+
+inpath
+
+#!/bin/bash
+
+in_path()
+{
+  cmd=$1
+  ourpath=$2
+  result=1
+
+  oldIFS=$IFS
+  IFS=":"
+
+  for directory in $ourpath
+  do
+    if [ -x $directory/$cmd ] ; then
+      result=0
+    fi
+  done
+
+  IFS=$oldIFS
+  return $result
+}
+
+checkForCmdInPath()
+{
+  var=$1
+
+    if [ "$var" != "" ] ; then
+      if [ "${var:0:1}" = "/" ] ; then
+        if [ ! -x $var ] ; then
+          return 1
+        fi
+      elif !  in_path $var "$PATH" ;
+        return 2
+      fi
+    fi
+}
+
+
+library.sh
+
+dir=$( dirname "$(readlink -f "${BASH_SOURCE[0]}")")
+. ${dir}/inpath
+. ${dir}/validint
+. ${dir}/valid-date
+
+library.sh
+
+dir=$( dirname "$(readlink -f "${BASH_SOURCE[0]}")")
+. ${dir}/inpath
+. ${dir}/validint
+. ${dir}/valid-date
+
+library.sh
+
+dir=$( dirname "$(readlink -f "${BASH_SOURCE[0]}")" )
+. ${dir}/inpath
+. ${dir}/validint
+. ${dir}/valid-date
+
+library.sh
+
+dir=$( dirname "$(readlink -f "{BASH_SOURCE[0]}")" )
+. ${dir}/inpath
+. ${dir}/validint
+. ${dir}/valid-date
+
+
+valid-date
+
+#!/bin/bash
+
+isLeapYear()
+{
+  year=$1
+  if [ "$((year % 4))" -ne 0 ] ; then
+    return 1
+  if [ "$((year % 400))" -eq 0 ] ; then
+    return 0
+  if [ "$((year % 100))" -eq 0 ] ; then
+    return 1
+  else
+    return 0
+}
+
+
+valid-date
+
+#!/bin/bash
+
+isLeapYear()
+{
+  year=$1
+  if [ "$((year % 4))" -ne 0 ] ; then
+    return 1
+  elif [ "$((year % 400))" -eq 0 ] ; then
+    return 0
+  elif [ "$((year % 100))" -eq 0 ] ; then
+    return 1
+  else
+    return 0
+  fi
+}
+
+validint
+
+#!/bin/bash
+
+validint()
+{
+  number=$1
+  min=$2
+  max=$3
+
+  if [ -z $number ] ; then
+   echo "숫자를 입력하시오" >&2 ; return 1
+  fi
+
+ # 첫 글자가 '-'인지 확인:
+  if [ "${number%${number#?}}" = "-" ] ; then
+    testvalue="${number#?}" # 확인하기 위해 1번째 제외한 글자 매칭
+  else
+    testvalue="$number"
+  fi
+
+  nodigits="$(echo $testvalue | sed 's//[[digit:]]//g')"
+
+  if [ -z ! $nodigits ] ; then
+    echo "잘못된 숫자 형식입니다." >&2
+    return 1
+  fi
+
+  if [ ! -z $min ] ; then
+    if [ "$number" -lt "$min" ] ; then
+      echo "숫자가 너무 작습니다." >&2
+      return 1
+    fi
+  fi
+
+  if [ ! -z $max ] ; then
+    if [ "$number" -gt "$max" ] ; then
+      echo "숫자가 너무 큽니다." >&2
+      retunr 1
+    fi
+  fi
+  return 0
+}
+
+validint
+
+#!/bin/bash
+
+validint()
+{
+  number=$1
+  min=$2
+  max=$3
+
+  if [ -z $number ] ; then
+    echo "숫자를 입력하시오" >&2 ; return 1
+  fi
+
+  if [ "${number%${number#?}}" = "-" ] ; then
+    testvalue="${number#?}"
+  else
+    testvalue="$number"
+  fi
+
+  nodigits="$(echo $testvalue | sed 's/[[:digit:]]//g')"
+
+  if [ ! -z $nodigits ] ; then
+    echo "잘못된 숫자 형식입니다." >&2
+    return 1
+  fi
+
+  if [ ! -z $min ] ; then
+    if [ "$number" -lt "$min" ] ; then
+      echo "숫자가 너무 작습니다. " >&2
+      return 1
+    fi
+  fi
+
+  if [ ! -z $max ] ; then
+    if [ "$number" -gt "$max" ] ; then
+      echo "숫자가 너무 큽니다. " >&2
+      return 1 
+    fi
+  fi
+  return 0
+}
+
+
+main.sh
+
+#!/bin/bash
+
+. library.sh
+
+echo "처음으로 echo 명령어가 경로에 있나요? (1=예,2=아니오_"
+read answer
+while ! validint $answer 1 2 ; do
+  echo "다시 시도하세요. echo 명령어가"
+  echo "경로에 있나요? (1=예,2=아니요)"
+  read answer
+done
+
+if ! checkForCmdInPath "echo" ; then
+  echo "아니요, echo 명령어를 찾을수 없습니다."
+else
+  echo "echo 명령어가 PATH에 있습니다."
+fi
+
+echo ""
+echo "윤년일것같은 년도를 입력하세요"
+read answer
+
+while ! validint $year 1 9999 ; do
+  echo "올바른 형식의 연도를 입력하세요"
+  read year
+done
+
+if isLeapYear $year ; then
+  echo "맞아요 $year는 윤년입니다."
+else
+  echo "아니요 $year는 윤년이 아닙니다."
+fi
+
+exit 0
